@@ -242,12 +242,14 @@ control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4);
-        if (hdr.filter.isValid()) {
-            packet.emit(hdr.filter);
-        }
-        if (hdr.udp.isValid()) {
-            packet.emit(hdr.udp);
-        }
+        packet.emit(hdr.filter);
+        packet.emit(hdr.udp);
+        // if (hdr.filter.isValid()) {
+        //     packet.emit(hdr.filter);
+        // }
+        // if (hdr.udp.isValid()) {
+        //     packet.emit(hdr.udp);
+        // }
         /* TODO: use the emit function to
                  to emit the filter and udp
                  headers as well
