@@ -56,7 +56,7 @@ struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4;
     filter_t     filter;
-    utp_t        udp;
+    udp_t        udp;
 }
 
 /*************************************************************************
