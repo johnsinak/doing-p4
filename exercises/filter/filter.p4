@@ -141,6 +141,19 @@ control MyIngress(inout headers hdr,
              port, and applies the above actions
              as an option
     */
+
+    action drop() {
+        mark_to_drop(standard_metadata);
+    }
+
+    action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
+        standard_metadata.egress_spec = port;
+        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+        hdr.ethernet.dstAddr = dstAddr;
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
+    }
+
+
     table filter_exact {
         key = {
             hdr.ipv4.srcAddr: exact;
@@ -153,17 +166,6 @@ control MyIngress(inout headers hdr,
         }
         size = 1024;
         default_action = NoAction();
-    }
-
-    action drop() {
-        mark_to_drop(standard_metadata);
-    }
-
-    action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
-        standard_metadata.egress_spec = port;
-        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-        hdr.ethernet.dstAddr = dstAddr;
-        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 
     table ipv4_exact {
